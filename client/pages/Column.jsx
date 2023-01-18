@@ -24,11 +24,12 @@ const Column = ({ colName, droppableId, column, getTodos }) => {
       e.preventDefault();
       const response = await axios.post('/api/tasks/create', {
         title: newTodo.title,
-        text: newTodo.text,
+        content: newTodo.text,
+        // TODO: SEE DB Schema
       });
       setNewTodo((todo) => ({ ...todo, title: '', text: '' }));
       handleCloseModal();        //CLOSE NEW TODO MODAL
-      getTodos();                //REFRESH                      
+      getTodos();                //REFRESH
     } catch (err) {
       console.log(err);
     }
@@ -75,7 +76,7 @@ const Column = ({ colName, droppableId, column, getTodos }) => {
             {column?.items?.map((item, index) => {
               return (
                 <Todo
-                  key={item.id}
+                  key={item._id}
                   item={item}
                   index={index}
                   title={item.title}
