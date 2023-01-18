@@ -1,1 +1,3 @@
 node_modules
+db_pass.env
+/server/models/dbSchema.js
