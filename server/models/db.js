@@ -1,8 +1,6 @@
 const { Pool } = require('pg');
 
-// const BRIAN_URI = 'postgres://assojzyg:N8mhtCF41OW-ZC8BPpZAHq8w6MPsyHc-@mahmud.db.elephantsql.com/assojzyg';
-PG_URI= 'postgres://lvbqlfxf:cEJx4TZZyOxliTRx09oc_DjhHtXsJESr@isilo.db.elephantsql.com/lvbqlfxf'
-PSW= 'cEJx4TZZyOxliTRx09oc_DjhHtXsJESr'
+PG_URI= 'postgres://adsdxmbz:rN2SbZhEGvuMk563xOCWmZ5gFbHNL6UC@queenie.db.elephantsql.com/adsdxmbz'
 // console.log('URI: ', process.env.PG_URI)
 
 const pool = new Pool({
