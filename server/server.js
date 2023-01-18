@@ -18,11 +18,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
 
 // ROUTE HANDLER
-// Verify user does not work 
+// Verify user does not work
 // app.use('/dashboard', verifyRouter);
 app.use('/users', userRouter);
 app.use('/tasks', taskRouter);
 app.use('/comments', commentRouter);
+
+// CATCH ALL ERROR HANDLER
+app.use((req, res) => {
+  res.status(404).json({ err: "file not found"})
+})
 
 // GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {

@@ -3,10 +3,11 @@ const db = require('../models/db');
 
 const tasksController = {};
 
+//Tasks (_id serial PRIMARY KEY, title varchar, content varchar, index integer, status varchar, created_at timestamp DEFAULT NOW(), _boardID integer NOT NULL, _columnID integer NOT NULL
 
 //GET ALL TASKS CONTROLLER
 tasksController.getTasks = (req, res, next) => {
-  const text = 'SELECT * FROM task';
+  const text = 'SELECT * FROM tasks';
     db.query(text)
     .then(data => {
        // console.log('DATA: ', data);
@@ -17,7 +18,7 @@ tasksController.getTasks = (req, res, next) => {
     .catch(err => {
       next({
         status: 400,
-        log: 'Error in taskController.getTasks',
+        log: 'Error in taskController.getTasks' + err,
         message: {err: 'Error in taskController.getTasks'}
       })
     })
@@ -26,8 +27,8 @@ tasksController.getTasks = (req, res, next) => {
 //GET ONE TASK CONTROLLER
 tasksController.getTask = (req, res, next) => {
   const id = req.params.id //set ID primary key in table
-    const text = `SELECT * FROM task WHERE id = ${id}`; 
-    db.query(text)
+    const text = `SELECT * FROM tasks WHERE id = $1`;
+    db.query(text, id)
     .then(data => {
         console.log('DATA ', data.rows)
         res.locals.oneTask = data.rows
@@ -36,7 +37,7 @@ tasksController.getTask = (req, res, next) => {
     .catch(err => {
       next({
         status: 400,
-        log: 'Error in taskController.getTask',
+        log: 'Error in taskController.getTask' + err,
         message: {err: 'Error in taskController.getTask'}
       })
     })
@@ -44,23 +45,24 @@ tasksController.getTask = (req, res, next) => {
 }
 //CREATE ONE TASK CONTROLLER
 tasksController.createTask = (req,res,next) => {
-  
+
   const {
     title,
-    text,
+    content,
     // create_date,
     // comment_id
   } = req.body
-  
+
   // console.log(req.body);
 
-  const query = `INSERT INTO task (title, text)
-    VALUES($1, $2)
+  const query = `INSERT INTO tasks (title, content, _boardid)
+    VALUES($1, $2, $3)
     RETURNING *`;
 
   const values = [
     title,
-    text
+    content,
+    1,
     // create_date
   ]
 
@@ -74,7 +76,7 @@ tasksController.createTask = (req,res,next) => {
     .catch(err => {
       next({
         status: 400,
-        log: 'Error in taskController.createTask',
+        log: 'Error in taskController.createTask ' + err,
         message: {err: 'Error in taskController.createTask'}
       })
     })
@@ -82,9 +84,8 @@ tasksController.createTask = (req,res,next) => {
 //DELETE ONE TASK CONTROLLER
 tasksController.deleteTask = (req,res,next) => {
   const { id } = req.query //set ID primary key in table
-  const text = `DELETE FROM task WHERE task.ID = ${id}`
-
-  db.query(text) 
+  const text = `DELETE FROM tasks WHERE tasks._id = $1`
+  db.query(text, [id])
     .then(data => {
       res.locals.deletedTask = data.rows;
       return next();
@@ -92,7 +93,7 @@ tasksController.deleteTask = (req,res,next) => {
     .catch(err => {
       next({
         status: 400,
-        log: 'Error in taskController.deleteTask',
+        log: 'Error in taskController.deleteTask' + err,
         message: {err: 'Error in taskController.deleteTask'}
       })
     })
@@ -101,11 +102,11 @@ tasksController.deleteTask = (req,res,next) => {
 //UPDATE ONE TASK CONTROLLER ---> not working yet
 tasksController.updateTask = (req,res,next) => {
   const { id } = req.query; //set ID primary key in table
-  const { newUpdate, newTaskDetail, newDateCreated, newDoing, newDone } = req.body;
+  const { title, content, status} = req.body;
+  const values = [ title, content, status, id]
+  const text = `UPDATE tasks SET title = $1, content = $2, status= $3 WHERE tasks.id = $4`;
 
-  const text = `UPDATE task SET taskTitle = ${newUpdate}, taskDetail = ${newTaskDetail}, dateCreated = ${newDateCreated}, doing= ${newDoing}, done= ${newDone} WHERE task.id = ${id}`;
-
-  db.query(text)
+  db.query(text, values)
     .then(data => {
       res.locals.updatedTask = data.rows;
       return next()

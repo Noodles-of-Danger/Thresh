@@ -1,6 +1,10 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
+//"dev": "concurrently \"nodemon server/server.js\" \"NODE_ENV=development webpack-dev-server --open\"",
+//"start": "NODE_ENV=production nodemon server/server.js",
+
+
 module.exports = {
   entry: '/client/index.js', //react landing page
   output: {

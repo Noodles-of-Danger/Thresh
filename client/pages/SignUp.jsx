@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import signUpRequest from '../api/signUpRequest';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; //TODO: import redirect and set up redirecting after sign-up
 import axios from 'axios'
 
 export const SignUp = () => {
@@ -11,9 +11,8 @@ export const SignUp = () => {
   const [lastName, setlastName] = useState('');
   const [userRole, setuserRole] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
-  // handle form submission 
+  // handle form submission
   const handleSignUp = async (e) => {
     e.preventDefault();
     // signUpRequest(email, password, firstName, lastName, userRole)
@@ -34,7 +33,7 @@ export const SignUp = () => {
   return (
     <div className='flex flex-col h-screen w-screen items-center justify-center'>
       {/* display error message if error */}
-      <div>{error}</div> 
+      <div>{error}</div>
       {/* useState to track the data in each input field */}
         <form className='flex flex-col justify-items-center items-center' onSubmit={handleSignUp}>
           <input
@@ -54,7 +53,7 @@ export const SignUp = () => {
             placeholder='First Name:'
             value={firstName}
             onChange={(e) => setfirstName(e.target.value)}
-          /> 
+          />
           <input
             type='text'
             placeholder='Last Name:'

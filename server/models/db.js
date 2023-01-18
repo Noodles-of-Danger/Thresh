@@ -1,7 +1,8 @@
 const { Pool } = require('pg');
-const URI = require('../../db_pass.env');
+const db = require('../../db_pass.env');
 
-PG_URI= URI
+PG_URI= db.URI
+PSW= db.PSW
 // console.log('URI: ', process.env.PG_URI)
 
 const pool = new Pool({

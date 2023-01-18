@@ -41,7 +41,6 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 const Dashboard = () => {
-  // change data to empty array when working with real data
   const [columns, setColumns] = useState({
     ['tasks']: {
       name: 'To Do',
@@ -68,7 +67,6 @@ const Dashboard = () => {
   const getTodos = async () => {
     try {
       const response = await axios.get('/api/tasks');
-      // console.log('RES DATAAA: ', response.data)
       setColumns({
         ['tasks']: {
           name: 'To Do',

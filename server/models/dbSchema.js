@@ -1,3 +1,5 @@
+
+// TODO: add first name last name
 CREATE TABLE Users (_id serial PRIMARY KEY, username varchar NOT NULL, email varchar, password varchar NOT NULL, created_at timestamp DEFAULT NOW());
 
 CREATE TABLE JoinUserBoard (_id serial PRIMARY KEY, _userID integer NOT NULL, _boardID integer NOT NULL);
@@ -8,7 +10,7 @@ CREATE TABLE Boards (_id serial PRIMARY KEY, name varchar, manager varchar);
 
 CREATE TABLE Columns(_id serial PRIMARY KEY, columnName varchar, columnIndex integer NOT NULL, _boardID integer NOT NULL);
 
-CREATE TABLE Tasks (_id serial PRIMARY KEY, title varchar, content varchar, index integer, status varchar, created_at timestamp DEFAULT NOW(), _boardID integer NOT NULL, _columnID integer NOT NULL);
+CREATE TABLE Tasks (_id serial PRIMARY KEY, title varchar, content varchar, index integer, status varchar, created_at timestamp DEFAULT NOW(), _boardID integer NOT NULL);
 
 
 // user + board
