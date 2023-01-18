@@ -4,8 +4,8 @@
   "description": "SCRUM productivity tool to track team members task and completion",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/server.js",
-    "dev": "webpack-dev-server --open --hot",
+    "start": "NODE_ENV=production nodemon server/server.js",
+    "dev": "concurrently \"nodemon server/server.js\" \"NODE_ENV=development webpack-dev-server --open\"",
     "build": "webpack"
   },
   "repository": {
