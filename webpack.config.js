@@ -1,8 +1,8 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
-//"dev": "concurrently \"nodemon server/server.js\" \"NODE_ENV=development webpack-dev-server --open\"",
-//"start": "NODE_ENV=production nodemon server/server.js",
+// "dev": "concurrently \"nodemon server/server.js\" \"NODE_ENV=development webpack-dev-server --open\"",
+// "start": "NODE_ENV=production nodemon server/server.js",
 
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/',
   },
-  mode: 'process.env.NODE_ENV',
+  mode: process.env.NODE_ENV,
   module: {
     rules: [
       {
