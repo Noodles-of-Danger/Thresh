@@ -5,18 +5,35 @@ const boardController = {};
 boardController.getAllBoards = async (req, res, next) => {
   // get userID
   try {
-    const { id } = req.params;
+    const { userid } = req.params;
     const text = 'SELECT (_boardid, name) FROM joinuserboard INNER JOIN boards ON (joinuserboard._boardid=boards._id) WHERE _userid=$1';
-    const data = await db.query(text, [id])
+    const data = await db.query(text, [userid])
     console.log(data.rows);
     res.locals.allBoards = data.rows;
-    return next()
+    return next();
   } catch (err) {
       return next({
           log: 'boardController.getAllBoards error during get request ' + err,
           message: {err: 'An error occurred in boardController.getAllBoards middleware'}
       });
     };
+}
+
+
+boardController.getOneBoard = async (req, res, next) => {
+  try {
+    const { id, boardid } = req.query;
+    const text = 'SELECT (_boardid, name) FROM joinuserboard INNER JOIN boards ON (joinuserboard._boardid=boards.$2) WHERE _userid=$1';
+    const data = await db.query(text, [ id, boardid ])
+    console.log(data.rows);
+    res.locals.oneBoard = data.rows[0];
+    return next();
+  } catch (err) {
+    return next({
+      log: 'boardController.getOneBoard error during get request ' + err,
+      message: {err: 'An error occurred in boardController.getOneBoard middleware'}
+    });
+  }
 }
 
 // retrieve the userID, a request body that entails name of board

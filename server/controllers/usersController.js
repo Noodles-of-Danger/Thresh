@@ -19,7 +19,6 @@ usersController.getBcrypt = (req, res, next) => {
     bcrypt.hash(pass, WORKFACTOR)
         .then(hash => {
             req.body.password = hash;
-
             res.locals.user = req.body;
             return next();
         })
