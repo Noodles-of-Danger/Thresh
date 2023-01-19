@@ -6,7 +6,7 @@ CREATE TABLE JoinUserBoard (_id serial PRIMARY KEY, _userID integer NOT NULL, _b
 
 CREATE TABLE JoinUserTask (_id serial PRIMARY KEY, _userID integer NOT NULL, _taskID integer NOT NULL);
 
-CREATE TABLE Boards (_id serial PRIMARY KEY, name varchar, manager varchar);
+CREATE TABLE Boards (_id serial PRIMARY KEY, name varchar, _managerID integer NOT NULL);
 
 CREATE TABLE Columns(_id serial PRIMARY KEY, columnName varchar, columnIndex integer NOT NULL, _boardID integer NOT NULL);
 

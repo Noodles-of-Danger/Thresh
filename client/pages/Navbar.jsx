@@ -2,7 +2,7 @@ import React, { useState, createContext } from 'react';
 import Home from './Home.jsx';
 import { Login }  from './Login.jsx';
 import { SignUp } from './SignUp.jsx';
-import Dashboard from './NewDash.jsx';
+import Dashboard from './Dashboard.jsx';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import Logo from '../Images/Logo.png';
 import Board from './Board.jsx';
@@ -13,9 +13,9 @@ const Navbar = () => {
   const [selectedPage, setSelectedPage] = useState('');
   // const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');    // ADDED
+  const [userId, setUserId] = useState('');    // ADDED
   return (
-    <UserContext.Provider value={email}>  
+    <UserContext.Provider value={userId}>  
       <nav className="fixed w-screen bg-secondary-500 h-[80px] z-10 drop-shadow-xl">
         <div className="flex justify-between w-full h-full px-20">
           <div className="flex items-center gap-10">
@@ -67,7 +67,7 @@ const Navbar = () => {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/board" element={<Board />} />
-        <Route path="/login" element={<Login email={email} setEmail={setEmail}/>} />
+        <Route path="/login" element={<Login setUserId={setUserId}/>} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
      </UserContext.Provider>

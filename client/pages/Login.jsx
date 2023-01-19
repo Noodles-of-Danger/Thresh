@@ -5,12 +5,12 @@ import axios from 'axios'
 
 
 
-export const Login = ( {email, setEmail} ) => {
+export const Login = ( {setUserId} ) => {
   // useState to update and track the input fields from the login page
   const [password, setPassword] = useState('');
-  // const [email, setEmail] = useState('');  // IMPORTANT NOTE for future:  Documented this out and then moved useState up to Navbar for useContext purposes & then email/setEmail passed down here as props
+  const [email, setEmail] = useState('');  
   const [error, setError] = useState('');
-  const [user, setUser] = useState('');
+  // const [user, setUser] = useState('');
   const navigate = useNavigate();
 
   // handle login form submission
@@ -30,9 +30,8 @@ export const Login = ( {email, setEmail} ) => {
       // const currUser =`${response.data.firstname} ${response.data.lastname}`
       // console.log(currUser)
       // setUser(currUser)
-      if (response) {
-        navigate('/dashboard');
-      }
+      setUserId(response.data._id);
+      navigate('/dashboard');
     } catch (err) {
       setError('Invalid Email/Password');
       console.log('err:', err)
