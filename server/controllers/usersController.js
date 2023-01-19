@@ -14,14 +14,18 @@ const WORKFACTOR = 15;
 // }
 
 //CRYPT USER PASSWORD
-usersController.getBcrypt = (req, res, next) => {
+usersController.getBcrypt = async (req, res, next) => {
     const pass = req.body.password;
-    bcrypt.hash(pass, WORKFACTOR)
-        .then(hash => {
-            req.body.password = hash;
-            res.locals.user = req.body;
-            return next();
-        })
+    try {
+        const hash = await bcrypt.hash(pass, WORKFACTOR);
+        req.body.password = hash;
+        res.locals.user = req.body;
+        return next();
+    } catch (err) {
+        return next({
+            log: 'usersController.getBcrypt error during request ' + err,
+        });
+    }
 }
 
 
@@ -46,18 +50,19 @@ usersController.getUser = async (req, res, next) => {
         const response = await db.query(text, values);
         // storing input into res.locals.oneUser, response.rows is an array with one object
         res.locals.oneUser = response.rows[0];
-        if (response.rows[0]) {
-            const databasePw = res.locals.oneUser.password;
+        const databasePw = res.locals.oneUser.password;
 
-            // use bcrypt.compare to check password
-            // verified = true if bcrypt.compare is successful
-            const verified = await bcrypt.compare(password, databasePw);
-            if (verified) {
-                return next();
-            } else return res.status(403).json('err');
-        } else return res.status(403).json('err');
+        // use bcrypt.compare to check password
+        // verified = true if bcrypt.compare is successful
+        const verified = await bcrypt.compare(password, databasePw);
+        if (!verified) throw new Error("invalid password");
+        return next();
     } catch (err) {
-        console.log(err)
+        return next({
+            log: "usersController.getUser error during request " + err,
+            status: 403,
+            message: { err: "incorrect username and or password"}
+        })
     }
 }
 //CREATE ONE USER CONTROLLER

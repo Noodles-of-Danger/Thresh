@@ -1,16 +1,14 @@
 const { Pool } = require('pg');
 const db = require('../../db_pass.env');
 
-PG_URI= db.URI
-PSW= db.PSW
-// console.log('URI: ', process.env.PG_URI)
+PG_URI= db.URI;
+PSW = db.PSW;
 
 const pool = new Pool({
     connectionString: PG_URI,
     password: PSW,
     port: 3000
 });
-
 
 
 module.exports = {

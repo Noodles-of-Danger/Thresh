@@ -6,7 +6,8 @@ boardController.getAllBoards = async (req, res, next) => {
   // get userID
   try {
     const { userid } = req.params;
-    const text = 'SELECT (_boardid, name) FROM joinuserboard INNER JOIN boards ON (joinuserboard._boardid=boards._id) WHERE _userid=$1';
+    console.log(userid);
+    const text = 'SELECT _boardid AS id, name AS name FROM joinuserboard INNER JOIN boards ON (joinuserboard._boardid=boards._id) WHERE _userid=$1';
     const data = await db.query(text, [userid])
     console.log(data.rows);
     res.locals.allBoards = data.rows;

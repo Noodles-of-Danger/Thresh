@@ -1,6 +1,6 @@
 const express = require('express');
 const boardController = require('../controllers/boardController');
-
+const authController = require('../controllers/authController');
 const router = express.Router();
 
 //GET ALL TASKS
@@ -10,7 +10,7 @@ router.post('/createBoard', boardController.createBoard, boardController.createB
    res.status(200).json(res.locals.boardID);
 });
 
-router.get('/getBoards/:userid', boardController.getAllBoards, (req, res, next) => {
+router.get('/getBoards/:userid', authController.verifyJTW, boardController.getAllBoards, (req, res, next) => {
    res.status(200).json(res.locals.allBoards);
 });
 
