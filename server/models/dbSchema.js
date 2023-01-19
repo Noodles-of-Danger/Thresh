@@ -1,6 +1,6 @@
 
-// TODO: add first name last name
-CREATE TABLE Users (_id serial PRIMARY KEY, username varchar NOT NULL, email varchar, password varchar NOT NULL, created_at timestamp DEFAULT NOW());
+// NOTE: NO USER ROLE
+CREATE TABLE Users (_id serial PRIMARY KEY, username varchar NOT NULL, email varchar, firstname varchar, lastname varchar, password varchar NOT NULL, created_at timestamp DEFAULT NOW());
 
 CREATE TABLE JoinUserBoard (_id serial PRIMARY KEY, _userID integer NOT NULL, _boardID integer NOT NULL);
 

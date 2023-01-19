@@ -15,15 +15,12 @@ const WORKFACTOR = 15;
 
 //CRYPT USER PASSWORD
 usersController.getBcrypt = (req, res, next) => {
-    // console.log('req body: ', req.body)
-    //temp
     const pass = req.body.password;
     bcrypt.hash(pass, WORKFACTOR)
         .then(hash => {
             req.body.password = hash;
-            // console.log(('hash is: ', hash))
+
             res.locals.user = req.body;
-            // console.log('response:', res.locals.user);
             return next();
         })
 }
@@ -34,7 +31,6 @@ usersController.getUsers = (req, res, next) => {
     const text = 'SELECT * FROM users;'
     db.query(text)
     .then(data => {
-       // console.log('DATA: ', data);
         console.log('DATA.ROWS: ', data.rows);
         res.locals.allUsers = data.rows
         return next()
@@ -42,9 +38,7 @@ usersController.getUsers = (req, res, next) => {
 }
 //GET ONE USER CONTROLLER
 usersController.getUser = async (req, res, next) => {
-    console.log(req.body)
     const { email, password } = req.body;
-
     const text = `SELECT * FROM users WHERE email = $1`
     const values = [email]
 
@@ -54,14 +48,12 @@ usersController.getUser = async (req, res, next) => {
         // storing input into res.locals.oneUser, response.rows is an array with one object
         res.locals.oneUser = response.rows[0];
         if (response.rows[0]) {
-            console.log('made it')
             const databasePw = res.locals.oneUser.password;
-        
+
             // use bcrypt.compare to check password
             // verified = true if bcrypt.compare is successful
             const verified = await bcrypt.compare(password, databasePw);
             if (verified) {
-                console.log('made it again')
                 return next();
             } else return res.status(403).json('err');
         } else return res.status(403).json('err');
@@ -76,8 +68,8 @@ usersController.createUser = (req,res,next) => {
     console.log(req.body)
 
     const { firstName, lastName, password, userRole, email } = req.body
-    const text = `INSERT INTO users (firstName, lastName, password, userRole, email) VALUES ($1, $2, $3, $4, $5) RETURNING *;`
-    const values = [ firstName, lastName, password, userRole, email]
+    const text = `INSERT INTO users (firstName, lastName, password, username, email) VALUES ($1, $2, $3, $4, $4) RETURNING *;`
+    const values = [ firstName, lastName, password, email]
 
     db.query(text, values)
     .then(data => {
@@ -97,8 +89,8 @@ usersController.deleteUser = (req,res,next) => {
         res.locals.deleteUser = data.rows
         return next()
     })
-    
-    
+
+
 }
 
 //UPDATE ONE USER CONTROLLER ---> if you get everything in req.body
@@ -139,9 +131,8 @@ usersController.updateUser = (req,res,next) => {
 //         }
 
 usersController.setID = (req, res, next) => {
-    const id = res.locals.oneUser.id;
-    console.log(id)
-    res.cookie('ID', id, {httpOnly: true});
+    const id = res.locals.oneUser._id;
+    res.cookie('UID', id, {httpOnly: true, secure: true});
     return next()
 }
 
@@ -152,7 +143,7 @@ usersController.setID = (req, res, next) => {
 //     console.log('hello from cookie');
 //     const { id } = req.cookies;
 //     const text = `SELECT * users WHERE ID = ${id}`
-//     db.query(text) 
+//     db.query(text)
 //         .then(data => {
 //             console.log('data', data);
 //             return res.redirect('/login');

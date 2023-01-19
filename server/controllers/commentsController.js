@@ -1,3 +1,7 @@
+/**
+ * NOTE THIS FEATURE IS CURRENTLY IN DEVELOPMENT COMMENT ROUTES ARE CURRENTLY UNUSED BY APP
+ */
+
 const { text } = require('express');
 const db = require('../models/db');
 
@@ -81,7 +85,7 @@ commentsController.updateComment = (req, res, next) => {
     const id = req.params.id
     const  { commentBody }  = req.body
     console.log('commentBody' + commentBody)
-    const text = `UPDATE comment 
+    const text = `UPDATE comment
     SET  commentBody = '${commentBody}'
     WHERE ID = ${id};`
 
