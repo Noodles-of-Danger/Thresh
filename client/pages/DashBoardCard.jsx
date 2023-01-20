@@ -1,14 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const DashBoardCard = ({ boardID, boardName, boardURL }) => {
+const DashBoardCard = ({ boardID, boardName, boardRoute, boardDetails }) => {
   return (
-    <div>
-      TESTING
-      <div>Board ID: {boardID}</div>
+    <div className="dashBoardCard">
+      TITLE HERE
       <div>Board Name: {boardName}</div>
-      {/* <div>
-        <LINK to={boardURL}> LINKNAMEHERE </LINK>
-      </div> */}
+      <div>
+        <Link to={{ boardRoute }}> {boardRoute} </Link>
+      </div>
+      {/* <div>Board Details: {getSingleBoardDetails}</div> */}
     </div>
   );
 };

@@ -1,19 +1,23 @@
-const { Pool } = require('pg');
-const db = require('../../db_pass.env');
+const { Pool } = require("pg");
+const db = require("../../db_pass.env");
 
-PG_URI= db.URI;
+PG_URI = db.URI;
 PSW = db.PSW;
 
 const pool = new Pool({
-    connectionString: PG_URI,
-    password: PSW,
-    port: 3000
+  connectionString: PG_URI,
+  password: PSW,
+  port: 3000,
+  pool: {
+    max: 3,
+    min: 0,
+    idle: 10000,
+  },
 });
-
 
 module.exports = {
   query: (text, params, callback) => {
-    console.log('executed query', text);
+    console.log("executed query", text);
     return pool.query(text, params, callback);
-  }
+  },
 };

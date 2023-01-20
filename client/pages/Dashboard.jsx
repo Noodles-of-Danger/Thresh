@@ -9,11 +9,12 @@ const Dashboard = () => {
   const userID = useContext(UserContext);
 
   const [boards, setBoards] = useState([]);
+  // const [singleBoardDetails, setSingleBoardDetails] = useState([]);
 
   // const bundledBoardCards = [];
-  const getUserBoards = async (id) => {
+  const getUserBoards = async (userID) => {
     try {
-      const response = await axios.get(`api/board/getBoards/${id}`);
+      const response = await axios.get(`api/board/getBoards/${userID}`);
       // console.log(response.data);
       setBoards(response.data);
     } catch (err) {
@@ -27,24 +28,47 @@ const Dashboard = () => {
     }, []);
   }
 
-  console.log(boards);
+  // const getSingleBoardDetails = async (userID) => {
+  //   try {
+  //     const res = await axios.get(`api/board/getDetails/${userID}`);
+  //     console.log(typeof res.data, res.data);
+  //     return res;
+  //     // setSingleBoardDetails(res.data);
+  //   } catch (err) {
+  //     err.message = "Error in getting a user board";
+  //     console.log("err:", err);
+  //   }
+  // };
+
+  // console.log(boards);
+  const print = boards.map((elem) => {
+    return (
+      <DashBoardCard
+        boardName={elem.name}
+        boardID={elem._id}
+        boardRoute={`boards/${elem._id}`}
+        // boardDetails={elem} // TODO
+      />
+    );
+  });
 
   return (
     <div className="w-screen h-screen grid items-center justify-center">
+      {/* <br />
+      <br />
+      <br />
+      <br />
+      <br /> */}
+
       <div>
-        Board Creator Component goes here, takes name and manager ID (userID)
-        {userID}
+        {/* Board Creator Component(userID)
+        {userID} */}
       </div>
       {/* Bundle up board cards here for presentation below using DashBoardCard component --- need to do CSS
 
       CONSTRUCT THIS from response.data <--- each array element is an object w. 3 below properties */}
-      {boards.map((elem) => {
-        <DashBoardCard
-          boardID={elem._id}
-          boardName={elem.name}
-          // boardURL={`/api/board/getBoards/${userID}`}
-        />;
-      })}
+      <div className="dashBoardCardGrid">{print}</div>
+      <Board />
     </div>
   );
 };

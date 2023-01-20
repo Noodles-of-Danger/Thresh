@@ -18,6 +18,13 @@ boardController.getAllBoards = async (req, res, next) => {
     //   INNER JOIN Users ON Users._id=JoinUserBoard._userID
     //   WHERE Users._id=$1`;
 
+    // DATA TABLE RESULTING FROM 5 TABLE JOIN BELOW BELOW GENERATES 'MASTER TABLE' w/ BOARD NAME ON FAR RIGHT
+    // SELECT Boards.name AS BoardName, Boards._managerID, Users._id AS userID, username, email, firstname, lastname, password, Users.created_at AS UserCreatedAt, Tasks._id AS TaskID, Tasks.created_at AS TaskCreatedAt, Tasks.title, Tasks.content, Tasks.index, Tasks.status  FROM Boards
+    // LEFT JOIN JoinUserBoard ON JoinUserBoard._boardID=Boards._id
+    // LEFT JOIN Users ON JoinUserBoard._userid=Users._id
+    // LEFT JOIN JoinUserTask ON JoinUserTask._userID=Users._id
+    // LEFT JOIN Tasks ON Boards._id=Tasks._boardid;
+
     const data = await db.query(text, [id]);
     console.log(data.rows[0]);
     res.locals.allBoards = data.rows;
@@ -27,6 +34,49 @@ boardController.getAllBoards = async (req, res, next) => {
       log: "boardController.getAllBoards error during get request " + err,
       message: {
         err: "An error occurred in boardController.getAllBoards middleware",
+      },
+    });
+  }
+};
+
+boardController.getOneBoard = async (req, res, next) => {
+  try {
+    const { id, boardid } = req.query;
+    const text =
+      "SELECT (_boardid, name) FROM joinuserboard INNER JOIN boards ON (joinuserboard._boardid=boards.$2) WHERE _userid=$1";
+    const data = await db.query(text, [id, boardid]);
+    console.log(data.rows);
+    res.locals.oneBoard = data.rows[0];
+    return next();
+  } catch (err) {
+    return next({
+      log: "boardController.getOneBoard error during get request " + err,
+      message: {
+        err: "An error occurred in boardController.getOneBoard middleware",
+      },
+    });
+  }
+};
+
+boardController.getBoardDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const text = `SELECT tasks.*, users.*
+      FROM joinuserboard
+      INNER JOIN boards ON (joinuserboard._boardid = boards._id) 
+      INNER JOIN users ON (joinuserboard._userid = users._id)
+      INNER JOIN joinusertask ON (joinusertask._userid = users._id) 
+      INNER JOIN tasks on (joinusertask._taskid = tasks._id)
+      WHERE users._id=$1`;
+    const data = await db.query(text, [id]);
+    console.log(data.rows);
+    res.locals.boardDetails = data.rows[0];
+    return next();
+  } catch (err) {
+    return next({
+      log: "boardController.getBoardDetails error during get request " + err,
+      message: {
+        err: "An error occurred in boardController.getBoardDetails middleware",
       },
     });
   }

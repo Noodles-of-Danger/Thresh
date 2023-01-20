@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Montserrat:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Montserrat:wght@700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -11,11 +11,29 @@ body,
   font-family: "DM Sans", sans-serif;
   color: #303d40;
   font-weight: bold;
-  background-color: #F6EEE5;
+  background-color: #f6eee5;
 }
 
 @layer base {
   button {
-    @apply bg-tertiary-500 text-primary-500 rounded-xl px-10 py-1.5 hover:bg-opacity-50
+    @apply bg-tertiary-500 text-primary-500 rounded-xl px-10 py-1.5 hover:bg-opacity-50;
   }
+}
+
+/* New additions by Team Danger Noodle */
+.dashBoardCardGrid {
+  margin-left: 10%;
+  margin-top: 5%;
+  display: grid;
+  grid-template-columns: 300px 300px 300px 300px;
+  grid-auto-rows: 150px;
+  column-gap: 35px;
+  row-gap: 35px;
+}
+
+.dashBoardCard {
+  background: lightblue;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: center;
 }

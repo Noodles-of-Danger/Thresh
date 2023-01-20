@@ -10,6 +10,22 @@ router.get("/getBoards/:id", boardController.getAllBoards, (req, res, next) => {
   res.status(200).json(res.locals.allBoards);
 });
 
+router.get(
+  "/getDetails/:id",
+  boardController.getBoardDetails,
+  (req, res, next) => {
+    res.status(200).json(res.locals.boardDetails);
+  }
+);
+
+router.get(
+  "/getOneBoard/:boardid",
+  boardController.getOneBoard,
+  (req, res, next) => {
+    res.status(200).json(res.locals.oneBoard);
+  }
+);
+
 router.post(
   "/createBoard",
   boardController.createBoard,
